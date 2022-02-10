@@ -19,12 +19,11 @@ public class Main {
                 {1, 8, 7, 3, 2, 9, 4, 5, 6}};
 
         showSudoku(sudoku);
-        System.out.println(isCorrect(sudoku));
+        System.out.println(isCorrect(sudoku) ? "корректно" : "некорректно");
     }
 
 
     public static boolean isCorrect(int[][] sudoku) {
-
         Set<Integer> horizontalSet = new HashSet<>();
         Set<Integer> verticalSet = new HashSet<>();
         for (int i = 0; i < 9; i++) {
