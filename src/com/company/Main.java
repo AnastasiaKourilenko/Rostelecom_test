@@ -19,35 +19,69 @@ public class Main {
                 {1, 8, 7, 3, 2, 9, 4, 5, 6}};
 
         showSudoku(sudoku);
-        System.out.println(isCorrect(sudoku) ? "корректно" : "некорректно");
+        System.out.println(isCorrectVersion2(sudoku) ? "корректно" : "некорректно");
+        System.out.println(isCorrectVersion3(sudoku) ? "корректно" : "некорректно");
     }
 
+    public static boolean isCorrectVersion2(int[][] sudoku) {
+        //проверка размерности переданной матрицы
+        if (sudoku.length != 9) {
+            return false;
+        } else {
+            for (int i = 0; i < 9; i++) {
+                if (sudoku[i].length != 9) {
+                    return false;
+                }
+            }
+        }
 
-    public static boolean isCorrect(int[][] sudoku) {
+        //проверка корректности горизонталей
         Set<Integer> horizontalSet = new HashSet<>();
-        Set<Integer> verticalSet = new HashSet<>();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (horizontalSet.contains(sudoku[i][j]) || verticalSet.contains(sudoku[j][i])) {
+                if (sudoku[i][j] < 1 || sudoku[i][j] > 9) {
                     return false;
                 } else {
                     horizontalSet.add(sudoku[i][j]);
+                }
+            }
+            if(horizontalSet.size()!=9){
+                return false;
+            }
+            horizontalSet.clear();
+        }
+
+        //проверка корректности вертикалей
+        Set<Integer> verticalSet = new HashSet<>();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (sudoku[j][i]<1 || sudoku[j][i]>9){
+                    return false;
+                } else{
                     verticalSet.add(sudoku[j][i]);
                 }
             }
-            horizontalSet.clear();
+            if (verticalSet.size()!=9){
+                return false;
+            }
             verticalSet.clear();
         }
 
+        //проверка корректности сегментов 3*3
         Set<Integer> segmentSet = new HashSet<>();
         for (int i = 0; i < 9; i += 3) {
             for (int j = 0; j < 9; j += 3) {
                 for (int l = i; l < i + 3; l++) {
                     for (int k = j; k < j + 3; k++) {
-                        if (segmentSet.contains(sudoku[l][k])) {
+                        if (sudoku[l][k]<1||sudoku[l][k]>9) {
                             return false;
-                        } else segmentSet.add(sudoku[l][k]);
+                        } else {
+                            segmentSet.add(sudoku[l][k]);
+                        }
                     }
+                }
+                if(segmentSet.size()!=9){
+                    return false;
                 }
                 segmentSet.clear();
             }
@@ -55,10 +89,64 @@ public class Main {
         return true;
     }
 
+    public static boolean isCorrectVersion3(int[][] sudoku) {
+        //проверка размерности переданной матрицы
+        if (sudoku.length != 9) {
+            return false;
+        } else {
+            for (int i = 0; i < 9; i++) {
+                if (sudoku[i].length != 9) {
+                    return false;
+                }
+            }
+        }
 
-    static void showSudoku(int[][] sudoku) {
+        //проверка корректности горизонталей и вертикалей
+        Set<Integer> horizontalSet = new HashSet<>();
+        Set<Integer> verticalSet = new HashSet<>();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
+                if (sudoku[i][j] < 1 || sudoku[i][j] > 9) {
+                    return false;
+                } else if (sudoku[j][i]<1 || sudoku[j][i]>9){
+                    return false;
+                } else{
+                    horizontalSet.add(sudoku[i][j]);
+                    verticalSet.add(sudoku[j][i]);
+                }
+            }
+            if(horizontalSet.size()!=9||verticalSet.size()!=9){
+                return false;
+            }
+            horizontalSet.clear();
+            verticalSet.clear();
+        }
+
+        //проверка корректности сегментов 3*3
+        Set<Integer> segmentSet = new HashSet<>();
+        for (int i = 0; i < 9; i += 3) {
+            for (int j = 0; j < 9; j += 3) {
+                for (int l = i; l < i + 3; l++) {
+                    for (int k = j; k < j + 3; k++) {
+                        if (sudoku[l][k]<1||sudoku[l][k]>9) {
+                            return false;
+                        } else {
+                            segmentSet.add(sudoku[l][k]);
+                        }
+                    }
+                }
+                if(segmentSet.size()!=9){
+                    return false;
+                }
+                segmentSet.clear();
+            }
+        }
+        return true;
+    }
+
+    static void showSudoku(int[][] sudoku) {
+        for (int i = 0; i < sudoku.length; i++) {
+            for (int j = 0; j < sudoku[i].length; j++) {
                 System.out.print(sudoku[i][j] + " ");
             }
             System.out.println();
