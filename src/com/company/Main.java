@@ -145,9 +145,9 @@ public class Main {
     }
 
     static void showSudoku(int[][] sudoku) {
-        for (int i = 0; i < sudoku.length; i++) {
-            for (int j = 0; j < sudoku[i].length; j++) {
-                System.out.print(sudoku[i][j] + " ");
+        for (int[] horizontal : sudoku) {
+            for (int a : horizontal) {
+                System.out.print(a + " ");
             }
             System.out.println();
         }
